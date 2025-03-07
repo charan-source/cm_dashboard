@@ -120,7 +120,8 @@ const AllExperiences = () => {
           startIcon={<Add />}
           sx={{
             backgroundColor: colors.blueAccent[700],
-            color: colors.grey[100],
+            // color: colors.grey[100],
+            color: '#fff',
             fontSize: "1rem",
             fontWeight: "bold",
             padding: "7px 15px",
