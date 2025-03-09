@@ -16,7 +16,8 @@ import {
 } from "@mui/material";
 import {  Add } from "@mui/icons-material";
 import { tokens } from "../../theme";
-import { Link } from "react-router-dom";
+import Header from "../../components/Header";
+import { useNavigate } from "react-router-dom";
 
 // Sample Ticket Data
 const sampleTickets = [
@@ -41,6 +42,7 @@ const getStatusColor = (status) => {
 };
 
 const NewExperiences = () => {
+      const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [search, setSearch] = useState("");
@@ -91,6 +93,10 @@ const NewExperiences = () => {
   return (
     <Box p={3}>
       {/* Header */}
+      <Header
+        title="New Experiences"
+        // subtitle="List of Customer Relationship Managers"
+      />
       <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap">
         <TextField
           label="Search..."
@@ -102,19 +108,21 @@ const NewExperiences = () => {
         />
         <Button
           variant="contained"
+          
           startIcon={<Add />}
           sx={{
             backgroundColor: colors.blueAccent[700],
-            color: colors.grey[100],
+            // color: colors.grey[100],
+            color: '#fff',
             fontSize: "1rem",
             fontWeight: "bold",
             padding: "7px 15px",
             marginTop: "10px",
           }}
-          component={Link}  // Use Link as the component
-          to="/crmform"         // Set the route properly
+
+          onClick={() => navigate("/crmform")}
         >
-          New Ticket
+             Allot To Experience
         </Button>
       </Box>
 

@@ -1,14 +1,20 @@
-import { Box, Button, TextField, Select, MenuItem, InputLabel, FormControl, Typography, useTheme } from "@mui/material";
+import { 
+  Box, Button, TextField, Select, MenuItem, InputLabel, FormControl, 
+  Typography, useTheme , useMediaQuery
+} from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
-import useMediaQuery from "@mui/material/useMediaQuery";
+// import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import { tokens } from "../../theme";
 
 const CrmForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
-    const theme = useTheme();
-    const colors = tokens(theme.palette.mode);
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  // const [status] = useState("Open");
+  const isMobile = useMediaQuery("(max-width:600px)");
+
 
   const handleFormSubmit = (values) => {
     console.log(values);
@@ -18,78 +24,143 @@ const CrmForm = () => {
     <Box m="20px">
       <Header title="Allot Experience" subtitle="Allot Experience To Business of The Unit" />
 
-      <Formik onSubmit={handleFormSubmit} initialValues={initialValues} validationSchema={checkoutSchema}>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={checkoutSchema}
+        onSubmit={handleFormSubmit}
+      >
         {({ values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue }) => (
           <form onSubmit={handleSubmit}>
-            <Box display="grid" gap="30px" gridTemplateColumns="repeat(4, minmax(0, 1fr))" sx={{"& > div": { gridColumn: isNonMobile ? undefined : "span 4" }}}>
-              {/* Status Dropdown */}
-              <FormControl fullWidth sx={{ gridColumn: "span 2" }}>
-                <InputLabel>Customers</InputLabel>
-                <Select name="status" value={values.status} onChange={handleChange} onBlur={handleBlur}>
-                  <MenuItem value="Pending">Pending</MenuItem>
-                  <MenuItem value="Waiting for confirmation">Waiting for confirmation</MenuItem>
-                  <MenuItem value="Processing">Processing</MenuItem>
-                  <MenuItem value="Resolved">Resolved</MenuItem>
-                </Select>
-              </FormControl>
 
-              {/* Priority Dropdown */}
-              <FormControl fullWidth sx={{ gridColumn: "span 2" }}>
-                <InputLabel>Priority</InputLabel>
-                <Select name="priority" value={values.priority} onChange={handleChange} onBlur={handleBlur}>
-                  <MenuItem value="Low">Low</MenuItem>
-                  <MenuItem value="Medium">Medium</MenuItem>
-                  <MenuItem value="High">High</MenuItem>
-                  <MenuItem value="Urgent">Urgent</MenuItem>
-                </Select>
-              </FormControl>
+            {/** Dropdowns Grid */}
+            <Box 
+              display="grid" 
+              gap="30px" 
+              gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+              sx={{ "& > div": { gridColumn: isNonMobile ? undefined : "span 4" } }}
+            >
+              <DropdownField label="Customers" name="status" value={values.status} handleChange={handleChange} options={[
+                "Pending", "Waiting for confirmation", "Processing", "Resolved"
+              ]} />
 
-              {/* Ticket Type Dropdown */}
-              <FormControl fullWidth sx={{ gridColumn: "span 2" }}>
-                <InputLabel>Ticket Type</InputLabel>
-                <Select name="ticketType" value={values.ticketType} onChange={handleChange} onBlur={handleBlur}>
-                  <MenuItem value="Issue">Issue</MenuItem>
-                  <MenuItem value="Request">Request</MenuItem>
-                  <MenuItem value="Query">Query</MenuItem>
-                </Select>
-              </FormControl>
+              <DropdownField label="Priority" name="priority" value={values.priority} handleChange={handleChange} options={[
+                "Low", "Medium", "High", "Urgent"
+              ]} />
 
-              {/* Department Dropdown */}
-              <FormControl fullWidth sx={{ gridColumn: "span 2" }}>
-                <InputLabel>Department</InputLabel>
-                <Select name="department" value={values.department} onChange={handleChange} onBlur={handleBlur}>
-                  <MenuItem value="Support">Support</MenuItem>
-                  <MenuItem value="Sales">Sales</MenuItem>
-                  <MenuItem value="Technical">Technical</MenuItem>
-                  <MenuItem value="HR">HR</MenuItem>
-                </Select>
-              </FormControl>
+              <DropdownField label="Ticket Type" name="ticketType" value={values.ticketType} handleChange={handleChange} options={[
+                "Issue", "Request", "Query"
+              ]} />
 
-              {/* Assign To Dropdown */}
-              <FormControl fullWidth sx={{ gridColumn: "span 2" }}>
-                <InputLabel>Assign To</InputLabel>
-                <Select name="assignTo" value={values.assignTo} onChange={handleChange} onBlur={handleBlur}>
-                  <MenuItem value="User1">User 1</MenuItem>
-                  <MenuItem value="User2">User 2</MenuItem>
-                  <MenuItem value="User3">User 3</MenuItem>
-                </Select>
-              </FormControl>
+              <DropdownField label="Department" name="department" value={values.department} handleChange={handleChange} options={[
+                "Support", "Sales", "Technical", "HR"
+              ]} />
 
-              {/* Subject Input */}
-              <TextField fullWidth variant="filled" type="text" label="Subject" name="subject" onBlur={handleBlur} onChange={handleChange} value={values.subject} error={!!touched.subject && !!errors.subject} helperText={touched.subject && errors.subject} sx={{ gridColumn: "span 4" }} />
+              <DropdownField label="Assign To" name="assignTo" value={values.assignTo} handleChange={handleChange} options={[
+                "User1", "User2", "User3"
+              ]} />
+            </Box>
 
-              {/* Request Information TextArea */}
-              <TextField fullWidth variant="filled" multiline rows={4} label="Request Information" name="requestInfo" onBlur={handleBlur} onChange={handleChange} value={values.requestInfo} error={!!touched.requestInfo && !!errors.requestInfo} helperText={touched.requestInfo && errors.requestInfo} sx={{ gridColumn: "span 4" }} />
-
-              {/* File Attachment */}
-              <Box sx={{ gridColumn: "span 4" }}>
-                <Typography>File Attachment</Typography>
-                <input type="file" onChange={(event) => setFieldValue("attachment", event.currentTarget.files[0])} />
+            {/** Text Fields */}
+            <Box mt="25px">
+              <StyledTextField
+                label="Subject"
+                name="subject"
+                value={values.subject}
+                handleChange={handleChange}
+                handleBlur={handleBlur}
+                error={touched.subject && errors.subject}
+              />
+              <Box mt="24px">
+                <StyledTextField
+                  label="Details of your experience"
+                  name="experienceDetails"
+                  value={values.experienceDetails}
+                  handleChange={handleChange}
+                  handleBlur={handleBlur}
+                  error={touched.experienceDetails && errors.experienceDetails}
+                  multiline
+                  rows={4}
+                />
               </Box>
             </Box>
-            <Box display="flex" justifyContent="end" mt="20px">
-              <Button type="submit" sx={{backgroundColor:colors.blueAccent[700],}} variant="contained">Allot Business of the Unit</Button>
-            </Box>
+
+            {/** File Upload Section */}
+            <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  backgroundColor: "#f0f0f0",
+                  padding: "10px",
+                  mt:"24px",
+                  borderRadius: "5px",
+                  width: isMobile ? "100%" : "50%",
+                  position: "relative",
+                }}
+              >
+                <input
+                  type="file"
+                  name="attachments"
+                  multiple
+                  id="fileUpload"
+                  style={{ display: "none" }}
+                  onChange={(event) => setFieldValue("attachments", event.currentTarget.files)}
+                />
+                <label
+                  htmlFor="fileUpload"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: "#192032",
+                    color: "white",
+                    padding: "10px 15px",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    fontWeight: "bold",
+                    width: isMobile ? "100%" : "auto",
+                    boxShadow: "3px 3px 6px rgba(0, 0, 0, 0.2)",
+                    transition: "0.3s",
+                    "&:hover": { backgroundColor: "#5a0ca1" },
+                  }}
+                >
+                  📤 Choose a file...
+                </label>
+                <Typography
+                  sx={{
+                    marginLeft: "10px",
+                    fontSize: "1rem",
+                    color: "#555",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {values.attachments.length > 0 ? values.attachments[0].name : "No file chosen"}
+                </Typography>
+              </Box>
+
+
+
+            {/** Submit Button */}
+            <Box display="flex" justifyContent="flex-end" mt="24px">
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{
+                    padding: "10px",
+                    fontSize: "1.2rem",
+                    fontWeight: "bold",
+                    borderRadius: "8px",
+                    boxShadow: "3px 3px 6px rgba(0, 0, 0, 0.2)",
+                    transition: "0.3s",
+                    backgroundColor: colors.blueAccent[700],
+                    "&:hover": { backgroundColor: colors.blueAccent[600], boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)" },
+                  }}
+                >
+                  Allot Experience
+                </Button>
+              </Box>
+
           </form>
         )}
       </Formik>
@@ -97,6 +168,44 @@ const CrmForm = () => {
   );
 };
 
+// 🔹 Dropdown Component with Modern Styling
+const DropdownField = ({ label, name, value, handleChange, options }) => {
+  const theme = useTheme();
+  
+  return (
+    <FormControl fullWidth sx={dropdownStyle(theme)}>
+      <InputLabel>{label}</InputLabel>
+      <Select name={name} value={value} onChange={handleChange}>
+        {options.map((option) => (
+          <MenuItem key={option} value={option}>{option}</MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  );
+};
+
+// 🔹 Styled TextField Component
+const StyledTextField = ({ label, name, value, handleChange, handleBlur, error, multiline = false, rows = 1 }) => {
+  const theme = useTheme();
+  return (
+    <TextField
+      fullWidth
+      variant="outlined"
+      label={label}
+      name={name}
+      value={value}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      error={!!error}
+      helperText={error}
+      multiline={multiline}
+      rows={rows}
+      sx={textFieldStyle(theme)}
+    />
+  );
+};
+
+// ✅ **Validation Schema**
 const checkoutSchema = yup.object().shape({
   status: yup.string().required("Status is required"),
   priority: yup.string().required("Priority is required"),
@@ -104,10 +213,11 @@ const checkoutSchema = yup.object().shape({
   department: yup.string().required("Department is required"),
   assignTo: yup.string().required("Assignee is required"),
   subject: yup.string().required("Subject is required"),
-  requestInfo: yup.string().required("Request Information is required"),
-  attachment: yup.mixed().required("File attachment is required"),
+  experienceDetails: yup.string().required("Experience Details are required"),
+  attachments: yup.mixed().required("File attachment is required"),
 });
 
+// ✅ **Initial Values**
 const initialValues = {
   status: "",
   priority: "",
@@ -115,8 +225,36 @@ const initialValues = {
   department: "",
   assignTo: "",
   subject: "",
-  requestInfo: "",
-  attachment: null,
+  experienceDetails: "",
+  attachments: [], // ✅ Set this as an empty array
 };
+
+// ✅ **Styles**
+const dropdownStyle = (theme) => ({
+  "& .MuiInputLabel-root": { color: theme.palette.mode === "dark" ? "#ffffff" : "#333" },
+  "& .MuiOutlinedInput-root": {
+    borderRadius: "8px",
+    backgroundColor: theme.palette.mode === "dark" ? "#1f2a40" : "#ffffff",
+    boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.1)",
+    "& fieldset": { borderColor: theme.palette.mode === "dark" ? "#555" : "#ccc" },
+    "&:hover fieldset": { borderColor: theme.palette.mode === "dark" ? "#888" : "#666" },
+    "&.Mui-focused fieldset": { borderColor: theme.palette.mode === "dark" ? "#00bcd4" : "#1976d2" },
+  },
+});
+
+const textFieldStyle = (theme) => ({
+  "& .MuiOutlinedInput-root": {
+    borderRadius: "8px",
+    backgroundColor: theme.palette.mode === "dark" ? "#1f2a40" : "#ffffff",
+  },
+});
+
+// const uploadButtonStyle = (colors) => ({
+//   backgroundColor: colors.blueAccent[600], color: "#FFF",
+// });
+
+// const submitButtonStyle = (colors) => ({
+//   backgroundColor: colors.blueAccent[700], "&:hover": { backgroundColor: colors.blueAccent[600] },
+// });
 
 export default CrmForm;

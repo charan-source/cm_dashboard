@@ -82,7 +82,7 @@ const Dashboard = () => {
       <Box mb={3} p={2} borderRadius={2} sx={{ bgcolor: colors.primary[400] }}>
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item xs={12} sm={6}>
-            <Header title="Customer Manager Portal" subtitle="Welcome to your dashboard" />
+            <Header title="Customer Relationship Manager Portal" subtitle="Welcome to your dashboard" />
           </Grid>
           <Grid item>
             <Button
@@ -125,11 +125,11 @@ const Dashboard = () => {
                 <StatBox
                   title={item.title}
                   subtitle={item.subtitle}
-                  color={colors.blueAccent[500]}
+                  color='#3e4396'
                   progress={item.progress}
                   icon={React.cloneElement(item.icon, {
                     fontSize: "large",
-                    sx: { color: colors.blueAccent[500] },
+                    sx: { color: '#3e4396' },
                   })}
                 />
               </Box>

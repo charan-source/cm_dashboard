@@ -18,6 +18,7 @@ import CrmForm from "./scenes/crmform";
 import Pie from "./scenes/pie";
 // import FAQ from "./scenes/faq";
 import Geography from "./scenes/geography";
+import Profile from "./scenes/profile";
 // import Calendar from "./scenes/calendar/calendar";
 
 // Import Experience Pages with Correct Naming
@@ -53,7 +54,8 @@ function App() {
               {/* <Route path="/faq" element={<FAQ />} /> */}
               {/* <Route path="/calendar" element={<Calendar />} /> */}
               <Route path="/geography" element={<Geography />} />
-
+              <Route path="/profile" element={<Profile />} />
+              
               {/* Corrected Experience Routes */}
               <Route path="/allExperiences" element={<AllExperiences />} />
               <Route path="/newExperiences" element={<NewExperiences />} />

@@ -102,7 +102,7 @@ const AllExperiences = () => {
     <Box p={3}>
       {/* Header */}
       <Header
-        title="Your Experiences"
+        title="Total Experiences"
         // subtitle="List of Customer Relationship Managers"
       />
       <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap">
@@ -128,9 +128,9 @@ const AllExperiences = () => {
             marginTop: "10px",
           }}
 
-          onClick={() => navigate("/cmform")}
+          onClick={() => navigate("/crmform")}
         >
-          Add New Experience
+            Allot To Experience
         </Button>
       </Box>
 
